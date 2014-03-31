@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marching Squares Test</title>
+
+    <script type="text/javascript" src="MarchingSquares.js" ></script>
+
+    <script type="text/javascript">
+
+    var readyStateCheckInterval = setInterval( function() {
+        if (document.readyState === "complete") {
+            clearInterval(readyStateCheckInterval);
+            init();
+        }
+    }, 10);
+
+    function getRandomItemFromArray(array){
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function init(){
+
+        //CREATE CANVAS
+        var canvas = document.createElement('canvas');
+        canvas.style.position = "absolute";
+        var context = canvas.getContext("2d");
+        var canvasContainer = document.getElementById("canvasContainer");
+        canvasContainer.appendChild(canvas);
+        canvas.width = 300;
+        canvas.height = 300;
+
+        //FILL CANVAS WITH A BLOB MADE OF RANDOM LETTERS
+        var weights = ["normal", "bold", "bolder", "lighter"];
+        var styles = ["normal", "italic", "oblique"];
+        var fonts = ["serif", "sans-serif", "cursive", "fantasy"];
+        context.textBaseline = "top";
+        context.fillStyle = "#CCCCCC";
+
+        var characters = ("ABCDEFGHIJKLMNOPQRSTUVXYZ1234567890").split("");
+        var i, character;
+        var numCharacters = 10;
+        var radianIncrement = (Math.PI*2) / numCharacters;
+
+        var grifa = getRandomItemFromArray;
+        for(i=0; i<numCharacters; i++){
+            context.font = grifa(weights) + " " + grifa(styles) + " " + 80 + "px " + grifa(fonts);
+            context.save();
+            context.translate(150, 150);
+            context.rotate(i * radianIncrement);
+            character = grifa(characters);
+            context.fillText(character,0,0);
+            context.restore();
+        }
+
+        //THIS IS IT, MARCHING SQUARES SAMPLE :
+        var outlinePoints = MarchingSquares.getBlobOutlinePoints(canvas);//returns [x1,y1,x2,y2,x3,y3... etc.]
+        context.fillStyle = "#FF0000";
+        for(var i=0; i<outlinePoints.length; i+=2){
+            context.fillRect(outlinePoints[i], outlinePoints[i+1], 1, 1);
+        }
+    }
+
+    </script>
+
+    <style type="text/css">
+
+        html, body{
+            margin : 0px;
+            width : 100%;
+            height : 100%;
+            overflow: hidden;
+        }
+
+        #canvasContainer{
+            margin : 0px;
+            width : 100%;
+            height : 100%;
+        }
+
+    </style>
+
+</head>
+    <body>
+        <div id="canvasContainer"></div>
+    </body>
+</html>
