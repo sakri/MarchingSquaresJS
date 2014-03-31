@@ -6,8 +6,10 @@ http://devblog.phillipspiess.com/2010/02/23/better-know-an-algorithm-1-marching-
 
 This is a Javascript implementation designed to be used with Html5 Canvas.
 
-Here's a few codepen demos using it:
+Check out the code in marchingSquaresTest.html for usage example.
 
+
+Here's a few codepen demos using it:
 
 //A visualization of the algo as it executes
 http://codepen.io/sakri/full/aIirl
@@ -20,3 +22,6 @@ http://codepen.io/sakri/full/zbqti
 
 //He-Man effect
 http://codepen.io/sakri/full/wsiLC
+
+
+Have a good day!
