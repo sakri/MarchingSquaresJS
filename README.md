@@ -11,16 +11,16 @@ Check out the code in marchingSquaresTest.html for usage example.
 
 Here's a few codepen demos using it:
 
-//A visualization of the algo as it executes
+A visualization of the algo as it executes
 http://codepen.io/sakri/full/aIirl
 
-//Text Edge Flare
+Text Edge Flare
 http://codepen.io/sakri/full/vIKJp
 
-//Ghost text
+Ghost text
 http://codepen.io/sakri/full/zbqti
 
-//He-Man effect
+He-Man effect
 http://codepen.io/sakri/full/wsiLC
 
 
