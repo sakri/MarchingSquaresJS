@@ -54,17 +54,17 @@
         // Do some sanity checking, so we aren't
         // walking outside the image
         // technically this should never happen
-        if (startX< 0){
+        if (startX < 0){
             startX = 0;
         }
-        if (startX> MarchingSquares.sourceCanvas.width){
-            startX= MarchingSquares.sourceCanvas.width;
+        if (startX > MarchingSquares.sourceCanvas.width){
+            startX = MarchingSquares.sourceCanvas.width;
         }
-        if (startY< 0){
-            startY= 0;
+        if (startY < 0){
+            startY = 0;
         }
-        if (startY> MarchingSquares.sourceCanvas.height){
-            startY= MarchingSquares.sourceCanvas.height;
+        if (startY > MarchingSquares.sourceCanvas.height){
+            startY = MarchingSquares.sourceCanvas.height;
         }
 
         // Set up our return list
@@ -75,11 +75,16 @@
         var x = startX;
         var y = startY;
 
+        var imageData = MarchingSquares.sourceContext.getImageData(0,0, MarchingSquares.sourceCanvas.width, MarchingSquares.sourceCanvas.height);
+        var index, width4 = imageData.width * 4;
+
         // The main while loop, continues stepping until
         // we return to our initial points
         do{
             // Evaluate our state, and set up our next direction
-            MarchingSquares.step(x, y);
+            //index = (y-1) * width4 + (x-1) * 4;
+            index = (y-1) * width4 + (x-1) * 4;
+            MarchingSquares.step(index, imageData.data, width4);
 
             // If our current point is within our image
             // add it to the list of points
@@ -87,7 +92,7 @@
                 x < MarchingSquares.sourceCanvas.width &&
                 y >= 0 &&
                 y < MarchingSquares.sourceCanvas.height){
-                pointList.push(x - 1, y - 1);//offset of 1 due to the 1 pixel padding added to sourceCanvas
+                pointList.push(x - 2, y - 1);//offset of 1 due to the 1 pixel padding added to sourceCanvas
             }
 
             switch (MarchingSquares.nextStep){
@@ -108,15 +113,15 @@
     // represent our current state, and sets our current and
     // previous directions
 
-    MarchingSquares.step = function(x, y){
-        //console.log("MarchingSquares.step()");
+    MarchingSquares.step = function(index, data, width4){
+        //console.log("Sakri.MarchingSquares.step()");
         // Scan our 4 pixel area
-        MarchingSquares.sampleData = MarchingSquares.sourceContext.getImageData(x-1, y-1, 2, 2).data;
+        //Sakri.imageData = Sakri.MarchingSquares.sourceContext.getImageData(x-1, y-1, 2, 2).data;
 
-        MarchingSquares.upLeft = MarchingSquares.sampleData[3] > 0;
-        MarchingSquares.upRight = MarchingSquares.sampleData[7] > 0;
-        MarchingSquares.downLeft = MarchingSquares.sampleData[11] > 0;
-        MarchingSquares.downRight = MarchingSquares.sampleData[15] > 0;
+        MarchingSquares.upLeft = data[index + 3] > 0;
+        MarchingSquares.upRight = data[index + 7] > 0;
+        MarchingSquares.downLeft = data[index + width4 + 3] > 0;
+        MarchingSquares.downRight = data[index + width4 + 7] > 0;
 
         // Store our previous step
         MarchingSquares.previousStep = MarchingSquares.nextStep;

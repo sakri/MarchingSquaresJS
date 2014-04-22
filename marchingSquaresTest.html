@@ -4,6 +4,7 @@
     <title>Marching Squares Test</title>
 
     <script type="text/javascript" src="MarchingSquares.js" ></script>
+    <script type="text/javascript" src="MarchingSquaresOld.js" ></script>
 
     <script type="text/javascript">
 
@@ -18,12 +19,14 @@
         return array[Math.floor(Math.random() * array.length)];
     }
 
+    var canvas, context, outlinePoints;
+
     function init(){
 
         //CREATE CANVAS
-        var canvas = document.createElement('canvas');
+        canvas = document.createElement('canvas');
         canvas.style.position = "absolute";
-        var context = canvas.getContext("2d");
+        context = canvas.getContext("2d");
         var canvasContainer = document.getElementById("canvasContainer");
         canvasContainer.appendChild(canvas);
         canvas.width = 300;
@@ -51,10 +54,30 @@
             context.fillText(character,0,0);
             context.restore();
         }
+    }
 
+    function runMarchingSquaresOld(){
+        var start = new Date();
+        outlinePoints = MarchingSquaresOld.getBlobOutlinePoints(canvas);//returns [x1,y1,x2,y2,x3,y3... etc.]
+        var result = document.getElementById("result");
+        result.innerHTML = "March (Old) took : "+ (new Date() - start);
+        renderOutline();
+    }
+
+    function runMarchingSquares(){
+        var start = new Date();
+        outlinePoints = MarchingSquares.getBlobOutlinePoints(canvas);//returns [x1,y1,x2,y2,x3,y3... etc.]
+        var result = document.getElementById("result");
+        result.innerHTML = "March (new) took : "+ (new Date() - start);
+        renderOutline();
+    }
+
+    var timesRun = 0;
+
+    function renderOutline(){
         //THIS IS IT, MARCHING SQUARES SAMPLE :
-        var outlinePoints = MarchingSquares.getBlobOutlinePoints(canvas);//returns [x1,y1,x2,y2,x3,y3... etc.]
-        context.fillStyle = "#FF0000";
+        context.fillStyle = timesRun%2 ? "#FF0000" : "#0000FF";
+        timesRun++;
         for(var i=0; i<outlinePoints.length; i+=2){
             context.fillRect(outlinePoints[i], outlinePoints[i+1], 1, 1);
         }
@@ -77,10 +100,26 @@
             height : 100%;
         }
 
+        #controlsDiv{
+            position: absolute;
+            font-family: sans-serif;
+            padding: 5px;
+            top: 280px;
+            text-align: center;
+        }
+
     </style>
 
 </head>
     <body>
         <div id="canvasContainer"></div>
+        <div id="controlsDiv">
+            <span>
+                <button type="button"  onclick="runMarchingSquaresOld()" >Run Old Marching Squares</button>
+                <button type="button"  onclick="runMarchingSquares()" >Run New Marching Squares</button>
+            </span>
+            <p id="result"></p>
+        </div>
+
     </body>
 </html>
