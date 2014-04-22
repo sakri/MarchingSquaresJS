@@ -8,6 +8,8 @@ This is a Javascript implementation designed to be used with Html5 Canvas.
 
 Check out the code in marchingSquaresTest.html for usage example.
 
+http://htmlpreview.github.io/?https://github.com/sakri/MarchingSquaresJS/blob/master/marchingSquaresTest.html
+
 
 Here's a few codepen demos using it:
 

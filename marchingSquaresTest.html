@@ -19,9 +19,17 @@
         return array[Math.floor(Math.random() * array.length)];
     }
 
-    var canvas, context, outlinePoints;
+    var canvas, context, outlinePoints, gitHubPreviewHack=false;
 
     function init(){
+
+        //not sure why but this code just kept executing over and over again at
+        //http://htmlpreview.github.io/?https://github.com/sakri/MarchingSquaresJS/blob/master/marchingSquaresTest.html
+        //probably something with the readyStateCheckInterval?
+        if(gitHubPreviewHack){
+            return;
+        }
+        gitHubPreviewHack = true;
 
         //CREATE CANVAS
         canvas = document.createElement('canvas');
