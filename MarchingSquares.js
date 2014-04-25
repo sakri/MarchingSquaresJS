@@ -106,6 +106,8 @@
 
         } while (x != startX || y != startY);
 
+        pointList.push(x - 1, y - 1);
+
         return pointList;
     };
 

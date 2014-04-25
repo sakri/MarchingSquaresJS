@@ -26,4 +26,11 @@ He-Man effect
 http://codepen.io/sakri/full/wsiLC
 
 
+Here's a demo that tackles "blobs with holes" as in getting the outline for characters such as "O" "8" "&" etc.
+http://codepen.io/sakri/pen/LCrDe
+
+If there is interest, I can include the required code in this repo (floodFill, basic threshold etc.)
+
+
+
 Have a good day!
