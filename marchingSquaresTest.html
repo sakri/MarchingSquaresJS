@@ -5,6 +5,7 @@
 
     <script type="text/javascript" src="MarchingSquares.js" ></script>
     <script type="text/javascript" src="MarchingSquaresOld.js" ></script>
+    <script type="text/javascript" src="MarchingSquaresOpt.js" ></script>
 
     <script type="text/javascript">
 
@@ -66,7 +67,7 @@
 
     function runMarchingSquaresOld(){
         var start = new Date();
-        outlinePoints = MarchingSquaresOld.getBlobOutlinePoints(canvas);//returns [x1,y1,x2,y2,x3,y3... etc.]
+        outlinePoints = MarchingSquaresOld.getBlobOutlinePoints(canvas);  // returns [x1,y1,x2,y2,x3,y3... etc.]
         var result = document.getElementById("result");
         result.innerHTML = "March (Old) took : "+ (new Date() - start);
         renderOutline();
@@ -74,10 +75,70 @@
 
     function runMarchingSquares(){
         var start = new Date();
-        outlinePoints = MarchingSquares.getBlobOutlinePoints(canvas);//returns [x1,y1,x2,y2,x3,y3... etc.]
+        outlinePoints = MarchingSquares.getBlobOutlinePoints(canvas);  // returns [x1,y1,x2,y2,x3,y3... etc.]
         var result = document.getElementById("result");
         result.innerHTML = "March (new) took : "+ (new Date() - start);
         renderOutline();
+    }
+
+    function runMarchingSquaresOpt(){
+        var start = new Date();
+        const width = canvas.width,
+            height = canvas.height,
+            data4 = canvas.getContext('2d').getImageData(0, 0, width, height).data,  // Uint8ClampedArray
+            len = width * height,
+            data = new Uint8Array(len);
+        for (let i = 0; i < len; ++i){
+            data[i] = data4[i << 2];
+        }
+        outlinePoints = MarchingSquaresOpt.getBlobOutlinePoints(data, width, height);  // returns [x1,y1,x2,y2,x3,y3... etc.]
+        var result = document.getElementById("result");
+        result.innerHTML = "March (new opt) took : "+ (new Date() - start);
+        renderOutline();
+    }
+
+    function runMarchingSquaresBenchmarks(ntimes=20){
+        var res = null;
+        // warm up
+        for (let i = 0; i < 5; ++i){
+            res = MarchingSquaresOld.getBlobOutlinePoints(canvas);
+        }
+        // test
+        let time_old = performance.now();
+        for (let i = 0; i < ntimes; ++i){
+            res = MarchingSquaresOld.getBlobOutlinePoints(canvas);
+        }
+        time_old = performance.now() - time_old;
+
+        // warm up
+        for (let i = 0; i < 5; ++i){
+            res = MarchingSquares.getBlobOutlinePoints(canvas);
+        }
+        // test
+        let time_new = performance.now();
+        for (let i = 0; i < ntimes; ++i){
+            res = MarchingSquares.getBlobOutlinePoints(canvas);
+        }
+        time_new = performance.now() - time_new;
+
+        // warm up
+        for (let i = 0; i < 5; ++i){
+            res = MarchingSquaresOpt.getBlobOutlinePoints(canvas);
+        }
+        // test
+        let time_opt = performance.now();
+        for (let i = 0; i < ntimes; ++i){
+            res = MarchingSquaresOpt.getBlobOutlinePoints(canvas);
+        }
+        time_opt = performance.now() - time_opt;
+        
+        var result = document.getElementById("result");
+        result.innerHTML = '<table><tr><td>old</td><td>new</td><td>opt</td></tr>' + 
+            '<tr><td>' + parseInt(time_old) + '</td><td>' + parseInt(time_new) + '</td><td>' + 
+                parseInt(time_opt) + '</td></tr>' + 
+            '<tr><td>' + parseInt(100 * time_old / time_new) + '%</td><td>100%</td><td style="font-weight: bold;">' + 
+            parseInt(100 * time_opt / time_new) + '%</td></tr>' + 
+            '<table>';
     }
 
     var timesRun = 0;
@@ -123,9 +184,13 @@
         <div id="canvasContainer"></div>
         <div id="controlsDiv">
             <span>
-                <button type="button"  onclick="runMarchingSquaresOld()" >Run Old Marching Squares</button>
-                <button type="button"  onclick="runMarchingSquares()" >Run New Marching Squares</button>
+                <button type="button" onclick="runMarchingSquaresOld()">Run Old Marching Squares</button>
+                <button type="button" onclick="runMarchingSquares()">Run New Marching Squares</button>
+                <button type="button" onclick="runMarchingSquaresOpt()">Run New Optimized Marching Squares</button>
             </span>
+            <p>
+                <button type="button" onclick="runMarchingSquaresBenchmarks()">Run Marching Squares Benchmarks</button>
+            </p>
             <p id="result"></p>
         </div>
 
