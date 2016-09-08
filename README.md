@@ -1,3 +1,22 @@
+## Optimized implementation of the [Marching Squares](http://users.polytech.unice.fr/~lingrand/MarchingCubes/algo.html) algorithm in Javascript
+
+![canvas](https://cloud.githubusercontent.com/assets/8630763/18348811/e2d33b10-75cd-11e6-8131-9d57140d5508.png)
+
+Computation times for 20 iterations:
+
+|            | old  | new | optimized |
+|------------|------|-----|-----|
+| time in ms | 3876 | 443 | 20  |
+| time in %  | 873  | 100 | **4**   |
+
+The optimized version is approximately 217 times faster than the "old version" and **24 times faster** than the "new version" implemented by [sakri](https://github.com/sakri).
+
+[ES2015](http://www.ecma-international.org/ecma-262/6.0/) [features](https://kangax.github.io/compat-table/es6/) like TypedArrays, const and local scoping are used to gain this speed up.
+
+Test it yourself with this online [benchmark / demo](http://htmlpreview.github.io/?https://github.com/mamrehn/MarchingSquaresJS/blob/master/marchingSquaresTest.html).
+
+## Original README
+
 Marching squares outlines blobs of non-transparent pixels inside a bitmap.
 
 This is a straight forward port from this excellent implementation by Phill Spiess:
